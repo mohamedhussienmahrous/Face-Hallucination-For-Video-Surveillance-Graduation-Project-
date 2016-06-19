@@ -1,7 +1,7 @@
-function [GlobalFace] = Step2_GlobalFaceShapeReconstruction(DataSet,Width,Height,Factor)
+function [GlobalFace] = Step2_GlobalFaceShapeReconstruction(DataSet,Width,Height,Factor,PCAK,Lamda)
 %UNTITLED3 Summary of this function goes here
 %   Detailed explanation goes here
-MeanFace=CalculateMeanFace(DataSet);
+MeanFace=CalculateMeanFace(DataSet,Width*Factor,Height*Factor);
 TargetFaceROW=DataSet(1,:);
 TargetFaceImage=reshape(TargetFaceROW,[Width*Factor,Height*Factor]);
 [EignVectors]=  PCA(DataSet);
@@ -11,8 +11,8 @@ TargetFaceImage=reshape(TargetFaceROW,[Width*Factor,Height*Factor]);
             Diff=Y- MeanFace;
             DiffFace=reshape(Diff,[Width*Factor,Height*Factor]);
             figure,imshow(DiffFace,[]),title('Difference Face');
-            [AlphaVector]=l1ls_featuresign(B(:,1:10),Y,7);
-             GloallyEnhancedFaceImage=TargetFaceImage+reshape(B(:,1:10)*AlphaVector, [Width*Factor,Height*Factor]);
+            [AlphaVector]=l1ls_featuresign(B(:,1:PCAK),Y,Lamda);
+             GloallyEnhancedFaceImage=TargetFaceImage+reshape(B(:,1:PCAK)*AlphaVector, [Width*Factor,Height*Factor]);
             figure,imshow(GloallyEnhancedFaceImage,[]),title('GloballyEnhancedFaceImage');
             %bilateral Filtering
             normImage = mat2gray(GloallyEnhancedFaceImage);

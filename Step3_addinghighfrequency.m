@@ -1,33 +1,34 @@
-function HallucinatedFaceImage = Step3_addinghighfrequency( GloballyEnhancesFaceImage,DataSet, Threshold)
+function HallucinatedFaceImage = Step3_addinghighfrequency( GloballyEnhancesFaceImage,DataSet, Threshold,Patch_w,Patch_h,Width,Height,ANNK)
 %UN
 close all;
+ImWidth=Width;
+ImHeight=Height;
 [row,col] = size(DataSet);
-W=reshape(DataSet(1,:),[180,180]);
+W=reshape(DataSet(1,:),[ImWidth,ImHeight]);
 newpicture = [];
 d = [];
-lowOut=zeros(row,180,180);
-highout=zeros(row,180,180);
-Patch_heigth = 20;
-Patch_width = 20;
+lowOut=zeros(row,ImWidth,ImHeight);
+highout=zeros(row,ImWidth,ImHeight);
+Patch_heigth = Patch_h;
+Patch_width = Patch_w;
 
 for j = 1:row
     % figure,imshow(reshape(DataSet(j,:),180,180),[]);
-    lowOut(j,:,:) = fun(reshape(DataSet(j,:),180,180),Threshold,0);
+    lowOut(j,:,:) = fun(reshape(DataSet(j,:),ImWidth,ImHeight),Threshold,0);
     % figure,imshow(reshape(lowOut(j,:),180,180),[]);
-    highout(j,:,:) = fun(reshape(DataSet(j,:),180,180),Threshold,1);
+    highout(j,:,:) = fun(reshape(DataSet(j,:),ImWidth,ImHeight),Threshold,1);
     % figure,imshow(reshape(highout(j,:),180,180),[]);
     close all;
 end
 
 for i = 1:row
-    patches_of_low{i,:,:} = Patches(lowOut(i,:,:),Patch_heigth,Patch_width);
-    patches_of_high{i,:,:} = Patches(highout(i,:,:),Patch_heigth,Patch_width);
+    patches_of_low{i,:,:} = Patches(lowOut(i,:,:),Patch_heigth,Patch_width,ImWidth,ImHeight);
+    patches_of_high{i,:,:} = Patches(highout(i,:,:),Patch_heigth,Patch_width,ImWidth,ImHeight);
 end
-globalEnhancedFacePatches = Patches(reshape(GloballyEnhancesFaceImage,[180,180]),Patch_heigth,Patch_width);
+globalEnhancedFacePatches = Patches(reshape(GloballyEnhancesFaceImage,[ImWidth,ImHeight]),Patch_heigth,Patch_width,ImWidth,ImHeight);
 
-for i=1:((180)/Patch_heigth)
-    
-    for j=1:(180/Patch_width)
+for i=1:((ImHeight)/Patch_heigth)
+    for j=1:(ImWidth/Patch_width)
         dictionary = [];
         for p=1:row-1
             TEST=patches_of_low{p};
@@ -36,7 +37,7 @@ for i=1:((180)/Patch_heigth)
         end
         
         qeuery = reshape(globalEnhancedFacePatches{i,j},[1,Patch_heigth*Patch_width]);
-        K = ANN(qeuery,dictionary,10);
+        K = ANN(qeuery,dictionary,ANNK);
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         d=[];
         for f=1:length(K)

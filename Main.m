@@ -1,7 +1,15 @@
 close('all')
-Width=45;
-Height=45;
+%%parameters
+Width=30;
+Height=30;
 Factor=4;
+PatchSizeW=12;
+PatchSizeH=12;
+PCAK=10;
+Lamda=7;
+Threeshould =20;
+ANNK=10;
+%Step 1
 [ DSet,N ,] = Step1_InputAndDataSetPreperation('Stair.mpg',Width,Height,Factor);
 CurrentIndex=1;
 inc=length(N);
@@ -14,9 +22,9 @@ Num=0;
 DataSet=DSet(CurrentIndex : (CurrentIndex+N(i))-1,:);
 CurrentIndex = CurrentIndex + N(i);
 %%%%% Step 2
-GlobalFace = Step2_GlobalFaceShapeReconstruction(DataSet,Width,Height,Factor);
+GlobalFace = Step2_GlobalFaceShapeReconstruction(DataSet,Width,Height,Factor,PCAK,Lamda);
 %%%%% Step 3
-HallucinatedFaceImage = Step3_addinghighfrequency(GlobalFace, DataSet, 20);
+HallucinatedFaceImage = Step3_addinghighfrequency(GlobalFace, DataSet,Threeshould ,PatchSizeW,PatchSizeH,Width*Factor,Height*Factor,ANNK);
 
 result = mat2gray(double(HallucinatedFaceImage)) + double(GlobalFace);
 figure,imshow(bfilter2(mat2gray(result),3,[0,1]),[]);

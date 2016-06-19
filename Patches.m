@@ -1,6 +1,6 @@
-function [ca] = Patches(image,blockSizeR,blockSizeC)
+function [ca] = Patches(image,blockSizeR,blockSizeC,W,H)
 rgbImage = (image);
-rgbImage=reshape(image,[180,180,1]);
+rgbImage=reshape(image,[W,H,1]);
 % Get the dimensions of the image.  numberOfColorBands should be = 3.
 [rows, columns, numberOfColorBands] = size(rgbImage);
 %==========================================================================
