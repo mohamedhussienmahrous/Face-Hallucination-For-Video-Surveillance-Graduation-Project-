@@ -17,6 +17,7 @@ CurrentIndex = CurrentIndex + N(i);
 GlobalFace = Step2_GlobalFaceShapeReconstruction(DataSet,Width,Height,Factor);
 %%%%% Step 3
 HallucinatedFaceImage = Step3_addinghighfrequency(GlobalFace, DataSet, 20);
-HallucinatedFaceImage)+double(GlobalFace);
+
+result = mat2gray(double(HallucinatedFaceImage)) + double(GlobalFace);
 figure,imshow(result,[]);
 end;

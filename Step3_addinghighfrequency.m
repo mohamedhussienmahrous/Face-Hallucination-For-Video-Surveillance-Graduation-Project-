@@ -36,14 +36,14 @@ for i=1:((180)/Patch_heigth)
         end
         
         qeuery = reshape(globalEnhancedFacePatches{i,j},[1,Patch_heigth*Patch_width]);
-        K = ANN(qeuery,dictionary,7);
+        K = ANN(qeuery,dictionary,10);
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         d=[];
         for f=1:length(K)
             G=patches_of_high{K(1,f),:,:};
             d = [d ;reshape(G{i,j},[1,Patch_heigth*Patch_width])];
         end
-        calculated_med = int64(median(d));
+        calculated_med = (median(d));
         newpicture{i,j} = reshape(calculated_med,[Patch_heigth,Patch_width]);
     end
 end
