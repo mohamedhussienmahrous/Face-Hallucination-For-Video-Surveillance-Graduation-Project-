@@ -1,6 +1,5 @@
 function HallucinatedFaceImage = Step3_addinghighfrequency( GloballyEnhancesFaceImage,DataSet, Threshold,Patch_w,Patch_h,Width,Height,ANNK)
 %UN
-close all;
 ImWidth=Width;
 ImHeight=Height;
 [row,col] = size(DataSet);
@@ -18,7 +17,7 @@ for j = 1:row
     % figure,imshow(reshape(lowOut(j,:),180,180),[]);
     highout(j,:,:) = fun(reshape(DataSet(j,:),ImWidth,ImHeight),Threshold,1);
     % figure,imshow(reshape(highout(j,:),180,180),[]);
-    close all;
+   % close all;
 end
 
 for i = 1:row

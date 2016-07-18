@@ -1,10 +1,10 @@
 close('all')
 %%parameters
-Width=30;
-Height=30;
+Width=16;
+Height=16;
 Factor=4;
-PatchSizeW=12;
-PatchSizeH=12;
+PatchSizeW=8;
+PatchSizeH=8;
 PCAK=10;
 Lamda=7;
 Threeshould =20;
@@ -25,7 +25,6 @@ CurrentIndex = CurrentIndex + N(i);
 GlobalFace = Step2_GlobalFaceShapeReconstruction(DataSet,Width,Height,Factor,PCAK,Lamda);
 %%%%% Step 3
 HallucinatedFaceImage = Step3_addinghighfrequency(GlobalFace, DataSet,Threeshould ,PatchSizeW,PatchSizeH,Width*Factor,Height*Factor,ANNK);
-
 result = mat2gray(double(HallucinatedFaceImage)) + double(GlobalFace);
 figure,imshow(bfilter2(mat2gray(result),3,[0,1]),[]);
 end;
